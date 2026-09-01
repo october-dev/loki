@@ -201,7 +201,7 @@ class SkinConfig:
 _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
     "default": {
         "name": "default",
-        "description": "Classic Hermes — gold and kawaii",
+        "description": "Loki — gold, warm, and adaptable",
         # Dark-authored. Values match the TUI's DARK_THEME so the classic CLI
         # and the TUI render the same Hermes gold.
         "colors": {
@@ -274,13 +274,19 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             # Empty = use hardcoded defaults in display.py
         },
         "branding": {
-            "agent_name": "Hermes Agent",
-            "welcome": "Welcome to Hermes Agent! Type your message or /help for commands.",
-            "goodbye": "Goodbye! ⚕",
-            "response_label": " ⚕ Hermes ",
+            "agent_name": "Loki",
+            "welcome": "Welcome to Loki. Type your message or /help for commands.",
+            "goodbye": "Until next time.",
+            "response_label": " Loki ",
             "prompt_symbol": "❯",
             "help_header": "(^_^)? Available Commands",
         },
+        "banner_logo": """[bold #FFD700]██╗      ██████╗ ██╗  ██╗██╗[/]
+[bold #FFD700]██║     ██╔═══██╗██║ ██╔╝██║[/]
+[#FFBF00]██║     ██║   ██║█████╔╝ ██║[/]
+[#FFBF00]██║     ██║   ██║██╔═██╗ ██║[/]
+[#CD7F32]███████╗╚██████╔╝██║  ██╗██║[/]
+[#CD7F32]╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝[/]""",
         "tool_prefix": "┊",
     },
     "ares": {

@@ -910,10 +910,10 @@ def _print_curator_first_run_notice() -> None:
         f"~{days}d after installation; only agent-created skills are in "
         f"scope and nothing is ever auto-deleted (archive is recoverable)."
     )
-    print("  Preview now:  hermes curator run --dry-run")
-    print("  Pause it:     hermes curator pause")
+    print("  Preview now:  loki curator run --dry-run")
+    print("  Pause it:     loki curator pause")
     print(
-        "  Docs:         https://hermes-agent.nousresearch.com/docs/user-guide/features/curator"
+        "  Docs:         https://github.com/october-dev/loki"
     )
 
 def _print_fts_optimize_available_notice() -> None:
@@ -1950,7 +1950,7 @@ def _restore_state_db_from_snapshot(state_path: Path, snap_state: Path) -> bool:
 
 
 def _update_via_zip(args, *, had_desktop_app_before_update: bool = False) -> bool:
-    """Update Hermes Agent by downloading a ZIP archive.
+    """Update Loki by downloading a ZIP archive.
 
     Used on Windows when git file I/O is broken (antivirus, NTFS filter
     drivers causing 'Invalid argument' errors on file creation).
@@ -1988,7 +1988,7 @@ def _update_via_zip(args, *, had_desktop_app_before_update: bool = False) -> boo
         _m().sys.exit(1)
     _abort_zip_update_if_dirty_tree()
     zip_url = (
-        f"https://github.com/NousResearch/hermes-agent/archive/refs/heads/{branch}.zip"
+        f"https://github.com/october-dev/loki/archive/refs/heads/{branch}.zip"
     )
 
     print("→ Downloading latest version...")
@@ -2144,8 +2144,8 @@ def _update_via_zip(args, *, had_desktop_app_before_update: bool = False) -> boo
         # scare the user toward a reinstall they don't need.
         print("  Your existing install was left in place.")
         print(
-            "  Re-run `hermes update` to retry; if the agent won't start, "
-            "reinstall from https://hermes-agent.nousresearch.com"
+            "  Re-run `loki update` to retry; if the agent won't start, "
+            "reinstall from https://github.com/october-dev/loki"
         )
         _m().sys.exit(1)
     finally:
@@ -2903,13 +2903,19 @@ def _discard_stashed_changes(
     return True
 
 OFFICIAL_REPO_URLS = {
+    "https://github.com/october-dev/loki.git",
+    "git@github.com:october-dev/loki.git",
+    "https://github.com/october-dev/loki",
+    "git@github.com:october-dev/loki",
+    # Compatibility: old source installs may still have the Hermes repository
+    # as origin while using the Loki entrypoint.
     "https://github.com/NousResearch/hermes-agent.git",
     "git@github.com:NousResearch/hermes-agent.git",
     "https://github.com/NousResearch/hermes-agent",
     "git@github.com:NousResearch/hermes-agent",
 }
 
-OFFICIAL_REPO_URL = "https://github.com/NousResearch/hermes-agent.git"
+OFFICIAL_REPO_URL = "https://github.com/october-dev/loki.git"
 
 SKIP_UPSTREAM_PROMPT_FILE = ".skip_upstream_prompt"
 
@@ -3045,8 +3051,8 @@ def _sync_with_upstream_if_needed(
             return False
 
         print()
-        print("ℹ Your fork is not tracking the official Hermes repository.")
-        print("  This means you may miss updates from NousResearch/hermes-agent.")
+        print("ℹ Your fork is not tracking the official Loki repository.")
+        print("  This means you may miss updates from october-dev/loki.")
         print()
 
         if assume_yes or (
@@ -3056,7 +3062,7 @@ def _sync_with_upstream_if_needed(
             # without persisting the decline so interactive runs still get asked.
             print("  Skipping upstream setup (non-interactive run).")
             print(
-                "  Add it later with: git remote add upstream https://github.com/NousResearch/hermes-agent.git"
+                "  Add it later with: git remote add upstream https://github.com/october-dev/loki.git"
             )
             return False
 
@@ -3082,7 +3088,7 @@ def _sync_with_upstream_if_needed(
             print("→ Adding upstream remote...")
             if _add_upstream_remote(git_cmd, cwd):
                 print(
-                    "  ✓ Added upstream: https://github.com/NousResearch/hermes-agent.git"
+                    "  ✓ Added upstream: https://github.com/october-dev/loki.git"
                 )
                 has_upstream = True
             else:
@@ -3090,7 +3096,7 @@ def _sync_with_upstream_if_needed(
                 return False
         else:
             print(
-                "  Skipped. Run 'git remote add upstream https://github.com/NousResearch/hermes-agent.git' to add later."
+                "  Skipped. Run 'git remote add upstream https://github.com/october-dev/loki.git' to add later."
             )
             _mark_skip_upstream_prompt()
             return False
@@ -7935,7 +7941,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
             logger.debug("Could not read updates.non_interactive_local_changes: %s", exc)
             discard_local_changes = False
 
-    print("⚕ Updating Hermes Agent...")
+    print("◆ Updating Loki...")
     print()
 
     # Phase 1 (#91277): structured update receipt — record what this run
@@ -8223,7 +8229,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
         else:
             print("✗ Not a git repository. Please reinstall:")
             print(
-                "  curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash"
+                "  curl -fsSL https://raw.githubusercontent.com/october-dev/loki/main/scripts/install.sh | bash"
             )
             sys.exit(1)
 
@@ -9175,8 +9181,8 @@ def _cmd_update_impl(args, gateway_mode: bool):
             print()
             print(f"  ⚠ {failing_module} still fails to import after updating:")
             print(f"      {import_error}")
-            print("    Run `hermes update` again — if it persists, reinstall:")
-            print("    https://hermes-agent.nousresearch.com")
+            print("    Run `loki update` again — if it persists, reinstall:")
+            print("    https://github.com/october-dev/loki")
 
         node_failures = _update_node_dependencies()
         _m()._build_web_ui(_m().PROJECT_ROOT / "web")

@@ -3,7 +3,7 @@
 [project]
 name = "hermes-agent"
 version = "0.21.0"
-description = "The self-improving AI agent — creates skills from experience, improves them during use, and runs anywhere"
+description = "Loki — an adaptive, local-first personal agent built on the Hermes Agent compatibility layer"
 readme = "README.md"
 # Upper bound is load-bearing, not cosmetic. uv resolves the project's
 # Python from `requires-python`, and an inherited `UV_PYTHON` env var (or a
@@ -14,6 +14,7 @@ readme = "README.md"
 # build. Raise the ceiling once our Rust transitives ship cp314 wheels.
 requires-python = ">=3.11,<3.14"
 authors = [{ name = "Nous Research" }]
+maintainers = [{ name = "October" }]
 license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
@@ -389,6 +390,8 @@ requires = ["setuptools==83.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
+loki = "hermes_cli.main:main"
+loki-agent = "run_agent:main"
 hermes = "hermes_cli.main:main"
 hermes-agent = "run_agent:main"
 hermes-acp = "acp_adapter.entry:main"

@@ -1,6 +1,12 @@
-# Hermes Agent - Development Guide
+# Loki — Development Guide
 
-Instructions for AI coding assistants and developers working on the hermes-agent codebase.
+Instructions for AI coding assistants and developers working on Loki.
+
+> **Downstream boundary:** Loki preserves the Hermes Agent architecture and Git
+> history while owning its public identity, repository integrations, release
+> path, and product direction. Treat `hermes_cli`, `HERMES_*`, `~/.hermes`, and
+> legacy `hermes` commands as compatibility interfaces. New public-facing work
+> uses Loki. Upstream intake follows `UPSTREAM.md` and must preserve attribution.
 
 **Never give up on the right solution.**
 

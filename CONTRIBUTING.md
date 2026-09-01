@@ -1,6 +1,13 @@
-# Contributing to Hermes Agent
+# Contributing to Loki
 
-Thank you for contributing to Hermes Agent! This guide covers everything you need: setting up your dev environment, understanding the architecture, deciding what to build, and getting your PR merged.
+Thank you for contributing to Loki. This guide covers the development environment,
+architecture, contribution boundaries, and pull-request process.
+
+Loki is built on the Hermes Agent codebase. The `hermes_cli` module,
+`HERMES_*` variables, `~/.hermes` state path, and many internal comments retain
+their upstream names for compatibility. Use **Loki** for new public-facing
+interfaces and preserve those internals unless an approved migration says
+otherwise. Read [UPSTREAM.md](UPSTREAM.md) before merging upstream changes.
 
 ---
 
@@ -9,7 +16,7 @@ Thank you for contributing to Hermes Agent! This guide covers everything you nee
 We value contributions in this order:
 
 1. **Bug fixes** — crashes, incorrect behavior, data loss. Always top priority.
-2. **Cross-platform compatibility** — macOS, different Linux distros, and WSL2 on Windows. We want Hermes to work everywhere.
+2. **Cross-platform compatibility** — macOS, different Linux distros, and WSL2 on Windows. We want Loki to work everywhere.
 3. **Security hardening** — shell injection, prompt injection, path traversal, privilege escalation. See [Security](#security-considerations).
 4. **Performance and robustness** — retry logic, error handling, graceful degradation.
 5. **New skills** — but only broadly useful ones. See [Should it be a Skill or a Tool?](#should-it-be-a-skill-or-a-tool)
@@ -24,10 +31,10 @@ A quick search before you build saves your time and keeps the PR queue clean —
 
 - **Search both open *and* merged PRs and issues** for your topic or error symptom — the duplicate-check in the PR template fires at review time, after you've already done the work:
   ```bash
-  gh search issues --repo NousResearch/hermes-agent "<your terms>"
-  gh search prs --repo NousResearch/hermes-agent --state all "<your terms>"
+  gh search issues --repo october-dev/loki "<your terms>"
+  gh search prs --repo october-dev/loki --state all "<your terms>"
   ```
-  Or use the web UI: [issues](https://github.com/NousResearch/hermes-agent/issues?q=) · [PRs (all states)](https://github.com/NousResearch/hermes-agent/pulls?q=is%3Apr).
+  Or use the web UI: [issues](https://github.com/october-dev/loki/issues?q=) · [PRs (all states)](https://github.com/october-dev/loki/pulls?q=is%3Apr).
 - **The issue tracker can lag the code.** Many requested features are already implemented in-tree, so also search the source (`search_files`, or your editor's grep) for the capability before proposing it.
 - **If an open PR already addresses it**, consider reviewing or improving that one instead of opening a competing duplicate.
 - **For larger work**, comment on the issue to signal you're working on it, so others don't start the same thing.
@@ -96,7 +103,7 @@ Publish these as a **standalone plugin repo** instead:
 - Implement the relevant ABC and use the existing plugin discovery path (`~/.hermes/plugins/`, project `.hermes/plugins/`, or a pip entry point) — see [Build a Hermes Plugin](https://hermes-agent.nousresearch.com/docs/guides/build-a-hermes-plugin)
 - Register lifecycle hooks (`pre_tool_call`, `post_tool_call`, `pre_llm_call`, `post_llm_call`, `on_session_start`, `on_session_end`), tools (`ctx.register_tool`), and CLI subcommands (`ctx.register_cli_command`) through the surface we already expose — no core changes needed
 - If your plugin needs a capability the framework doesn't expose, that's a feature request to **widen the generic plugin surface** (a new hook or `ctx` method) — never special-case your plugin in core
-- Promote it in the [Nous Research Discord](https://discord.gg/NousResearch) `#plugins-skills-and-skins` channel so users can find and install it
+- Share it through Loki's GitHub Discussions so users can find and install it
 
 A well-built third-party-product plugin can clear automated review and still be closed for this reason — it's a placement decision, not a verdict on the code. PRs that add such a directory under `plugins/` will be closed with a pointer to publish it as its own repo.
 
@@ -111,43 +118,13 @@ A well-built third-party-product plugin can clear automated review and still be 
 | **Git** | With the `git-lfs` extension installed |
 | **Python 3.11–3.13** | uv will install it if missing |
 | **uv** | Fast Python package manager ([install](https://docs.astral.sh/uv/)) |
-| **Node.js 20+** | Optional — needed for browser tools and WhatsApp bridge (matches root `package.json` engines) |
+| **Node.js 22+** | Optional — needed for browser tools and WhatsApp bridge (matches root `package.json` engines) |
 
-### Install with the standard installer
+### Clone and install
 
-For most contributors, the best development bootstrap is the same path users
-take: run the standard installer, then work inside the repository it cloned.
-The installer creates the Hermes venv, wires the `hermes` command, stamps the
-install method for `hermes update`, and clones the full git project into
-`$HERMES_HOME/hermes-agent` (usually `~/.hermes/hermes-agent`). That keeps your
-development environment on the same layout the CLI, updater, lazy dependency
-installer, gateway, and docs assume.
-
-```bash
-curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
-cd "${HERMES_HOME:-$HOME/.hermes}/hermes-agent"
-
-# Add dev/test extras on top of the standard install.
-uv pip install -e ".[all,dev]"
-
-# Optional: docs site + workspace dependencies.
-npm install
-```
-
-After that, create branches and run tests from that checkout:
-
-```bash
-git checkout -b fix/description
-scripts/run_tests.sh
-```
-
-### Manual clone fallback
-
-Use this only if you intentionally do not want Hermes' managed install layout
-(for example, a throwaway clone inside a container or CI job). If you install
-this way, make sure you run the `hermes` entrypoint from this venv; running the
-system `python3 -m hermes_cli.main` can pick up unrelated system Python
-packages.
+Loki currently uses a source-first development install. Make sure you run the
+`loki` entrypoint from this environment; running the system
+`python3 -m hermes_cli.main` can pick up unrelated system Python packages.
 
 Create the venv **outside** the cloned source tree. A venv that lives inside
 the directory the agent operates from can be wiped by a relative-path command
@@ -156,12 +133,12 @@ which silently destroys the running runtime mid-session. Keeping it outside the
 tree means no relative path from the workspace resolves to it.
 
 ```bash
-git clone https://github.com/NousResearch/hermes-agent.git
-cd hermes-agent
+git clone https://github.com/october-dev/loki.git
+cd loki
 
 # Create venv with Python 3.11, OUTSIDE the source tree
-uv venv ~/.hermes/venvs/hermes-dev --python 3.11
-export VIRTUAL_ENV="$HOME/.hermes/venvs/hermes-dev"
+uv venv ~/.hermes/venvs/loki-dev --python 3.11
+export VIRTUAL_ENV="$HOME/.hermes/venvs/loki-dev"
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install with all extras (messaging, cron, CLI menus, dev tools)
@@ -185,17 +162,16 @@ echo "OPENROUTER_API_KEY=***" >> ~/.hermes/.env
 ### Run
 
 ```bash
-# The standard installer already put `hermes` on PATH.
-hermes doctor
-hermes chat -q "Hello"
+loki doctor
+loki chat -q "Hello"
 ```
 
-If you used the manual clone fallback, run `./hermes` from the checkout or
-symlink this clone's venv explicitly:
+You can also run `./loki` from the checkout or symlink this environment's
+entrypoint explicitly:
 
 ```bash
 mkdir -p ~/.local/bin
-ln -sf "$(pwd)/venv/bin/hermes" ~/.local/bin/hermes
+ln -sf "$VIRTUAL_ENV/bin/loki" ~/.local/bin/loki
 ```
 
 ### Run tests
@@ -215,7 +191,7 @@ pytest tests/ -v
 ## Project Structure
 
 ```
-hermes-agent/
+loki/
 ├── run_agent.py              # AIAgent class — core conversation loop, tool dispatch, session persistence
 ├── cli.py                    # HermesCLI class — interactive TUI, prompt_toolkit integration
 ├── model_tools.py            # Tool orchestration (thin layer over tools/registry.py)
@@ -972,8 +948,8 @@ test(tools): add unit tests for file_operations
 
 ## Reporting Issues
 
-- Use [GitHub Issues](https://github.com/NousResearch/hermes-agent/issues)
-- Include: OS, Python version, Hermes version (`hermes --version`), full error traceback
+- Use [GitHub Issues](https://github.com/october-dev/loki/issues)
+- Include: OS, Python version, Loki version (`loki --version`), full error traceback
 - Include steps to reproduce
 - Check existing issues before creating duplicates
 - For security vulnerabilities, please report privately
@@ -982,9 +958,9 @@ test(tools): add unit tests for file_operations
 
 ## Community
 
-- **Discord**: [discord.gg/NousResearch](https://discord.gg/NousResearch) — for questions, showcasing projects, and sharing skills
-- **GitHub Discussions**: For design proposals and architecture discussions
-- **Skills Hub**: Upload specialized skills to a registry and share them with the community
+- **GitHub Discussions**: design proposals, questions, and architecture discussions
+- **GitHub Issues**: reproducible bugs and scoped feature work
+- **Skills Hub**: specialized skills that do not belong in the core repository
 
 ---
 
