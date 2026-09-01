@@ -7,21 +7,14 @@
       <stop offset="0.48" stop-color="#22c55e"/>
       <stop offset="1" stop-color="#15803d"/>
     </linearGradient>
-    <filter id="glow" x="-10%" y="-20%" width="120%" height="140%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
-  <g fill="url(#emerald)" filter="url(#glow)" font-family="SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="15" font-weight="700" text-anchor="middle">
-    <text x="460" y="28" xml:space="preserve">██╗      ██████╗ ██╗  ██╗██╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗</text>
-    <text x="460" y="48" xml:space="preserve">██║     ██╔═══██╗██║ ██╔╝██║      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝</text>
-    <text x="460" y="68" xml:space="preserve">██║     ██║   ██║█████╔╝ ██║      ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║</text>
-    <text x="460" y="88" xml:space="preserve">██║     ██║   ██║██╔═██╗ ██║      ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║</text>
-    <text x="460" y="108" xml:space="preserve">███████╗╚██████╔╝██║  ██╗██║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║</text>
-    <text x="460" y="128" xml:space="preserve">╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝</text>
+  <g fill="url(#emerald)" font-family="SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="15" font-weight="700" text-anchor="start">
+    <text x="72" y="28" xml:space="preserve">██╗      ██████╗ ██╗  ██╗██╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗</text>
+    <text x="72" y="48" xml:space="preserve">██║     ██╔═══██╗██║ ██╔╝██║      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝</text>
+    <text x="72" y="68" xml:space="preserve">██║     ██║   ██║█████╔╝ ██║      ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║</text>
+    <text x="72" y="88" xml:space="preserve">██║     ██║   ██║██╔═██╗ ██║      ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║</text>
+    <text x="72" y="108" xml:space="preserve">███████╗╚██████╔╝██║  ██╗██║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║</text>
+    <text x="72" y="128" xml:space="preserve">╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝</text>
   </g>
   <path d="M288 151H392M528 151H632" stroke="#16a34a" stroke-width="1.5" opacity="0.7"/>
   <text x="460" y="156" fill="#4ade80" font-family="SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="11" font-weight="600" letter-spacing="3" text-anchor="middle">ADAPT  ◆  ACT  ◆  EVOLVE</text>
