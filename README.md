@@ -1,13 +1,10 @@
 <div align="center">
 
-<pre aria-label="LOKI">
-██╗      ██████╗ ██╗  ██╗██╗
-██║     ██╔═══██╗██║ ██╔╝██║
-██║     ██║   ██║█████╔╝ ██║
-██║     ██║   ██║██╔═██╗ ██║
-███████╗╚██████╔╝██║  ██╗██║
-╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝
-</pre>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/loki-wordmark-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/loki-wordmark-light.svg">
+  <img src="assets/loki-wordmark-light.svg" alt="Loki Agent ASCII wordmark" width="920">
+</picture>
 
 ### The adaptive personal agent
 
@@ -102,11 +99,6 @@ loki
 
 For development, install `.[all,dev]` and read
 [CONTRIBUTING.md](CONTRIBUTING.md).
-
-> [!NOTE]
-> The source repository is currently private. The clone command works for
-> collaborators authenticated with GitHub and becomes the public install path
-> when the project opens.
 
 ## Compatibility boundary
 

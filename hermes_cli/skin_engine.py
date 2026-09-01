@@ -201,7 +201,7 @@ class SkinConfig:
 _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
     "default": {
         "name": "default",
-        "description": "Loki — gold, warm, and adaptable",
+        "description": "Loki — emerald identity with a warm interface",
         # Dark-authored. Values match the TUI's DARK_THEME so the classic CLI
         # and the TUI render the same Hermes gold.
         "colors": {
@@ -281,12 +281,12 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             "prompt_symbol": "❯",
             "help_header": "(^_^)? Available Commands",
         },
-        "banner_logo": """[bold #FFD700]██╗      ██████╗ ██╗  ██╗██╗[/]
-[bold #FFD700]██║     ██╔═══██╗██║ ██╔╝██║[/]
-[#FFBF00]██║     ██║   ██║█████╔╝ ██║[/]
-[#FFBF00]██║     ██║   ██║██╔═██╗ ██║[/]
-[#CD7F32]███████╗╚██████╔╝██║  ██╗██║[/]
-[#CD7F32]╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝[/]""",
+        "banner_logo": """[bold #86EFAC]██╗      ██████╗ ██╗  ██╗██╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
+[bold #4ADE80]██║     ██╔═══██╗██║ ██╔╝██║      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
+[#22C55E]██║     ██║   ██║█████╔╝ ██║      ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║[/]
+[#22C55E]██║     ██║   ██║██╔═██╗ ██║      ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║[/]
+[#16A34A]███████╗╚██████╔╝██║  ██╗██║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║[/]
+[#15803D]╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝[/]""",
         "tool_prefix": "┊",
     },
     "ares": {
