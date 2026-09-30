@@ -14,6 +14,7 @@ import { resolveTerminalConnectionForSender } from './connection-apply'
 import { ensureSpawnHelperExecutable } from './spawn-helper-perms'
 import { buildInteractiveSshArgs } from './ssh-connection'
 import { createTerminalOutputGate } from './terminal-output-gate'
+import { applyWindowsMsysBashEnvDefaults } from './windows-msys-bash-env'
 import { buildWindowsInteractiveCommand } from './windows-remote-lifecycle'
 
 export interface TerminalIpcDeps {
@@ -29,6 +30,21 @@ export interface TerminalIpcApi {
   disposeTerminalSession: (id: string) => boolean
   disposeTerminalSessionsForSshScope: (scope: string) => void
   disposeAllTerminalSessions: () => void
+}
+
+// macOS accepts the bare charset name "UTF-8" as a locale; glibc does not, so
+// every Linux pane would print `bash: warning: setlocale: LC_CTYPE: cannot
+// change locale (UTF-8)`. Reuse the user's LANG there, else the glibc-guaranteed
+// C.UTF-8. Pure: the platform arrives as data so tests need not fake the host.
+export function terminalLcCtype(
+  env: { LANG?: string; LC_CTYPE?: string },
+  platform: NodeJS.Platform = process.platform
+): string {
+  if (env.LC_CTYPE) {
+    return env.LC_CTYPE
+  }
+
+  return platform === 'darwin' ? 'UTF-8' : env.LANG || 'C.UTF-8'
 }
 
 export function registerTerminalIpc({
@@ -156,7 +172,7 @@ export function registerTerminalIpc({
     delete env.COLORFGBG
 
     env.COLORTERM = 'truecolor'
-    env.LC_CTYPE = env.LC_CTYPE || 'UTF-8'
+    env.LC_CTYPE = terminalLcCtype(env)
     env.TERM = 'xterm-256color'
     env.TERM_PROGRAM = 'Hermes'
     env.TERM_PROGRAM_VERSION = app.getVersion()
@@ -166,7 +182,7 @@ export function registerTerminalIpc({
     // which marks the agent *backend* and gates cron/gateway behavior.
     env.HERMES_DESKTOP_TERMINAL = '1'
 
-    return env
+    return applyWindowsMsysBashEnvDefaults(env, isWindows)
   }
 
   function terminalChannel(id, suffix) {

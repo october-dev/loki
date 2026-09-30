@@ -79,9 +79,9 @@ memory, and execution backends replaceable.
 ### Requirements
 
 - Git with Git LFS
-- Python 3.11–3.13
-- [uv](https://docs.astral.sh/uv/)
-- Node.js 22+ only when working on JavaScript surfaces
+- Python 3.14 — the PM toolchain provisions the pinned interpreter
+- Node.js `^22.22.0`, `^24.11.0`, or `>=26.0.0` only when working on JavaScript
+  surfaces
 
 ### Install from source
 
@@ -89,16 +89,19 @@ memory, and execution backends replaceable.
 git clone https://github.com/october-dev/loki.git
 cd loki
 
-uv venv ~/.hermes/venvs/loki --python 3.11
-source ~/.hermes/venvs/loki/bin/activate
-uv pip install -e ".[all]"
+# PM prepares Python, tools, and dependencies for this checkout.
+source ./activate
 
-loki setup
-loki
+hermes setup
+hermes
 ```
 
-For development, install `.[all,dev]` and read
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Activation exposes the checkout through the compatibility `hermes` command;
+package installs also provide `loki`. `deactivate` restores the shell. See the
+[PM developer workflow](website/docs/reference/package-management.md#developer-workflow)
+for Windows, isolated data homes, and dependency changes.
+
+For development and tests, read [CONTRIBUTING.md](CONTRIBUTING.md#development-setup).
 
 ## Compatibility boundary
 
